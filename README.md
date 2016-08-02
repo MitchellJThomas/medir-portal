@@ -1,8 +1,12 @@
 # Deploy the medir user interface
 
-Using  HTTPS and letsencrypt.
+Using HTTPS and letsencrypt, this repo sets up the Docker containers for deploying and viewing the medir sensor app running on [Itty Sensor](https://www.ittysensor.com)
 
-Use docker-compose, [install that if you need to](https://www.docker.com/docker-toolbox).
+Use docker-compose,
+[install that if you need to](https://www.docker.com/docker-toolbox)
+to create a local instance.
+
+Use docker-cloud to host it using a cloud provider
 
 ## To host the medir UI
 
@@ -98,55 +102,16 @@ The service is now running over https.
 
 ## How to run it
 
-You need a docker server running on the public internet, with a DNS entry pointing at it. If you dont have this yet, use the [other repo](https://bitbucket.org/automationlogic/docker-machine-on-aws) in this series .
-
-```
-git clone git@bitbucket.org:automationlogic/le-docker-compose.git
-cd le-docker-compose
-```
-
-Open up docker-compose.yml, and change the two instances of ```www.yourdomain.co.uk``` with the dns name your docker server is running at. Then,
-
 ```
 docker-compose  build
 docker-compose  up
 ```
 
-An example app is now running securely. Try it with your browser!
+The medir app is now running securely.
 
 The letsencrypt container exited - this is what we want.
 
-
-## Integrate your app
-
-To use this with your own dockerised web server, edit docker-compose again.
-
-Replace this section:
-
-```
-app:
-  build: mock_server
-  ports:
-    - "80"
-```
-
-with 
-
-```
-app:
-  image: yourimage
-  ports:
-    - "80"
-```
-
-and then run
-
-```
-docker-compose rm -f
-docker-compose up
-```
-
-## Renew your certificate
+## To Renew the certificate
 
 Start the letsencrypt container with docker compose. The container starts, runs the acme process, and exits.
 
