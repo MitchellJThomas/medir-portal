@@ -1,0 +1,9 @@
+;; Influx REST insertion
+curl -i -XPOST 'http://localhost:8086/write?db=medir' --data-binary 'datum,device_id=abc123,name=attic tempc=20.64,humi=49.0 1474064166000000000
+datum,device_id=abc123,name=attic tempc=21.64,humi=50.3 1474064176000000000
+datum,device_id=def456,name=carboy tempc=16.640 1474064156000000000
+datum,device_id=def456,name=carboy tempc=17.00 1474064186000000000
+datum,device_id=abc123,name=attic tempc=20.63,humi=49.0 1474074166000000000
+datum,device_id=abc123,name=attic tempc=21.62,humi=50.3 1474074176000000000
+datum,device_id=def456,name=carboy tempc=16.04 1474074156000000000
+datum,device_id=def456,name=carboy tempc=17.01 1474074286000000000'

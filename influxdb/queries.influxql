@@ -1,0 +1,7 @@
+select * from datum
+select "name"::tag, tempc, humi from datum
+select "name", tempc, humi from datum GROUP BY "name"
+select STDDEV(tempc),STDDEV(humi) from datum WHERE time >= '2016-08-19T00:00:00Z' AND time <= '2016-09-18T00:00:00Z' GROUP BY "name"
+select STDDEV(tempc),STDDEV(humi) from datum WHERE time >= '2016-09-16T00:00:00Z' AND time <= '2016-09-18T00:00:00Z' GROUP BY "name", time(1h)
+select MEAN(tempc), STDDEV(tempc), MEAN(humi) as mean_humi, STDDEV(humi) as stddev_humi from datum WHERE time >= '2016-09-16T00:00:00Z' AND time <= '2016-09-18T00:00:00Z' GROUP BY "name", time(1h) fill(none)
+
