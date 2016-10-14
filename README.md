@@ -5,7 +5,7 @@ gathering, archiving, processesing and displaying sensor data.  The
 current implementation harvests temperature and humidity data.  
 
 Contained within this repository are the Docker containers and scripts
-for setting up the [web](web) and [data](data) portals.
+for setting up the [web](web-portal) and [data](data-portal) portals.
 
 # Where is the actual code?
 The [Medir repository](https://github.com/MitchellJThomas/medir)
