@@ -6,7 +6,15 @@ select STDDEV(tempc),STDDEV(humi) from datum WHERE time >= '2016-09-16T00:00:00Z
 select MEAN(tempc), STDDEV(tempc), MEAN(humi) as mean_humi, STDDEV(humi) as stddev_humi from medir WHERE time >= '2016-09-28T00:00:00Z' AND time <= '2016-09-29T00:00:00Z' GROUP BY time(10m) fill(none)
 
 
+# holt winters sequence
+
+SELECT tempc FROM medir.autogen.medir WHERE time >= '2016-09-30T00:00:00Z' AND device_id = '51ff6a065067545754360687' GROUP BY time(720m, 80m)
 
 SELECT first(tempc) FROM medir.autogen.medir WHERE time >= '2016-09-30T00:00:00Z' AND device_id = '51ff6a065067545754360687' GROUP BY time(720m, 80m)
 
 SELECT holt_winters_with_fit(first(tempc),8,2) FROM medir.autogen.medir WHERE time >= '2016-09-30T00:00:00Z' AND device_id = '51ff6a065067545754360687' GROUP BY time(720m, 80m)
+
+
+SELECT ((tempc * (9/5)) + 32) FROM medir.autogen.medir WHERE tmpltime() and tempc > 0 GROUP BY device_id
+
+SELECT humi FROM medir.autogen.medir WHERE tmpltime() GROUP BY device_id
