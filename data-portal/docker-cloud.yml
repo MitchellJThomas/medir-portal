@@ -1,0 +1,33 @@
+chronograph:
+  image: chronograf:latest
+  links:
+    -influxdb
+    mem_limit: 512 mb
+    ports:
+      - "10000"
+      volumes:
+        - /var/lib/chronograf
+
+influxdb:
+  image: influxdb:latest
+  links:
+    - cron-loader
+  mem_limit: 512mb
+  # restart: always
+  ports: 
+    - "8086"
+  volumes:
+    - /var/lib/influxdb
+
+cron-loader:
+  links:
+    - medir-webhook
+  volumes_from:
+    - medir-webhook
+  build:
+    ./cron-loader
+
+medir-webhook:
+  image: mitchelljthomas/medir_webhook
+  volumes:
+    - /logs
