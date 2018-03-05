@@ -8,7 +8,8 @@ import (
 //	"fmt"
 	"net/http"
 	"golang.org/x/crypto/acme/autocert"
-	log "github.com/sirupsen/logrus"
+	"log"
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
@@ -16,6 +17,10 @@ func main() {
 	// mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 	//	fmt.Fprintf(w, "<html><head/><body>Live from New York! Saturday Night Live!</body></html>")
 	// })
+	l := logrus.New()
+	w := l.Writer()
+	defer w.Close()
+
 	ports := []string{"443", "80", }
 	contentDir := "/medir/html"
 
@@ -31,13 +36,14 @@ func main() {
 		TLSConfig: &tls.Config{
 			GetCertificate: certManager.GetCertificate,
 		},
+		ErrorLog: log.New(w, "", 0),
 	}
 
-	log.WithFields(log.Fields{
+	logrus.WithFields(logrus.Fields{
 		"ports": ports,
 		"content": contentDir,
 	}).Info("Starting medir-portal-server")
 	go http.ListenAndServe(":" + ports[1], certManager.HTTPHandler(nil))
 	err := server.ListenAndServeTLS("", "")
-	log.Fatal(err)
+	logrus.Fatal(err)
 }

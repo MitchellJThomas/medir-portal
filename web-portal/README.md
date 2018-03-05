@@ -35,9 +35,15 @@ Use docker-cloud to host it using a cloud provider
     docker run -ti -p 8080:80 -p 8443:443 --name medir-portal mitchelljthomas/medirportal_go
 ```
 
-5. Kill it
+5. Kill the local test
 ```
     docker rm -f medir-portal
 ```
+
+6. Push to public repo
+```
+    docker-compose push
+```
+
 
 ## To Renew the certificate
