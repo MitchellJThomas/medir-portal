@@ -25,22 +25,30 @@ Use docker-cloud to host it using a cloud provider
     CGO_ENABLED=0 GOOS=linux go build -a  -installsuffix cgo -o medir-portal-server .
 ```
 
-3. Build the Docker image
+3. Build and copy the medir user interface code found over in the
+   (medir repo)[https://github.com/mitchellJThomas/medir).
+   Check out the repo, build the code and copy it to the `public`
+   directory.
+```
+    PORTAL_DIR=$PWD; cd medir/ui; lein comp*; cp -pr public $PORTAL_DIR
+```
+
+4. Build the Docker image
 ```
     docker-compose build
 ```
 
-4. Test it
+5. Test it
 ```
     docker run -ti -p 8080:80 -p 8443:443 --name medir-portal mitchelljthomas/medirportal_go
 ```
 
-5. Kill the local test
+6. Kill the local test
 ```
     docker rm -f medir-portal
 ```
 
-6. Push to public repo
+7. Login to the public docker hub if you havn't already and push to public repo
 ```
     docker-compose push
 ```
