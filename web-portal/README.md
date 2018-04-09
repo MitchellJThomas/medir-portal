@@ -14,18 +14,7 @@ Use docker-cloud to host it using a cloud provider
 
 ## How to build it
 
-1. Gotta install [Go dep](https://github.com/golang/dep) then do
-```
-    dep init
-```
-
-2. Build the static binary, assumes the golang package is installed
-   locally
-```
-    CGO_ENABLED=0 GOOS=linux go build -a  -installsuffix cgo -o medir-portal-server .
-```
-
-3. Build and copy the medir user interface code found over in the
+1. Build and copy the medir user interface code found over in the
    (medir repo)[https://github.com/mitchellJThomas/medir).
    Check out the repo, build the code and copy it to the `public`
    directory.
@@ -33,25 +22,32 @@ Use docker-cloud to host it using a cloud provider
     PORTAL_DIR=$PWD; cd medir/ui; lein comp*; cp -pr public $PORTAL_DIR
 ```
 
-4. Build the Docker image
+2. Build the Docker image
 ```
     docker-compose build
 ```
 
-5. Test it
+3. Test it
 ```
     docker run -ti -p 8080:80 -p 8443:443 --name medir-portal mitchelljthomas/medirportal_go
 ```
 
-6. Kill the local test
+4. Kill the local test
 ```
     docker rm -f medir-portal
 ```
 
-7. Login to the public docker hub if you havn't already and push to public repo
+5. Login to the public docker hub if you havn't already and push to public repo
 ```
     docker-compose push
 ```
 
 
 ## To Renew the certificate
+
+1. Re-start the container and it will fetch a new certificate from
+   Let's Encrypt.  Note: beware not to re-start too frequently as
+   Let's Encrypt has a limit
+
+Tip: Create a volume mount for /medir/certs to persist certificates
+across image re-starts
