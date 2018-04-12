@@ -27,9 +27,29 @@ Use docker-cloud to host it using a cloud provider
     docker-compose build
 ```
 
-3. Test it
+## How to test it
+
+This project uses Let's Encrypt to acquire TLS certificates.  This
+creates an interesting challenge when testing with respect to
+validating the certificate e.g. proper domain names.
+
+For testing purpose, this uses [Let's Encrypt
+Pebble](https://github.com/letsencrypt/pebble) service to issue test
+certificates.
+
+1. Get the ROOT CA test certificate from Pebble
+
+   ```mkdir pebble-ca-certs; wget -O pebble-ca-certs/pebble.minica.pem https://raw.githubusercontent.com/letsencrypt/pebble/master/test/certs/pebble.minica.pem```
+
+1. Start the processes
 ```
-    docker run -ti -p 8080:80 -p 8443:443 --name medir-portal mitchelljthomas/medirportal_go
+    docker-compose up
+```
+
+1. Send data
+```
+    curl -H "Content-Type: application/json" -X POST -d '{"username":"xyz","password":"xyz"}' http://localhost:9443/datum
+
 ```
 
 4. Kill the local test

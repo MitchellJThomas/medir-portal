@@ -4,30 +4,68 @@
 package main
 
 import (
+	"crypto/ecdsa"
+	"crypto/elliptic"
+	"crypto/rand"
 	"crypto/tls"
-	//	"fmt"
-	"io/ioutil"
-	"net/http"
-	"golang.org/x/crypto/acme/autocert"
-	"log"
 	"github.com/sirupsen/logrus"
+	"golang.org/x/crypto/acme"
+	"golang.org/x/crypto/acme/autocert"
 	"gopkg.in/natefinch/lumberjack.v2"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"os"
 )
 
+var l = logrus.New()
+
+func getACMEServer() string {
+	acmeServer, found := os.LookupEnv("ACME_SERVER_URL")
+	if found {
+		return acmeServer
+	} else {
+		// Let's Encrypt staging server https://letsencrypt.org/docs/staging-environment/
+		return "https://acme-staging-v02.api.letsencrypt.org/directory"
+	}
+}
+
+func genClient(test bool) *acme.Client {
+	if test {
+		acmeServer := getACMEServer()
+		key, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+		if err != nil {
+			log.Fatal(err)
+		}
+		l.WithFields(logrus.Fields{
+			"DirectoryServer": acmeServer,
+			"Key": key,
+		}).Info("Creating test acme Client")
+
+		return &acme.Client {
+			Key: key,
+			DirectoryURL: acmeServer,
+		}
+	} else {
+		return nil
+	}
+
+}
+
+
 func main() {
-	l := logrus.New()
 	w := l.Writer()
 	defer w.Close()
 
 	dlog := logrus.New()
 	dlog.Out = &lumberjack.Logger{
-		Filename:   "/medir/data/datum.log",
+		Filename:   "/medir/datum/datum.log",
 		MaxSize:    10, // megabytes
 		Compress:   true,
 	}
-
 	dlogWriter := dlog.Writer()
 	defer dlogWriter.Close()
+
 	medirMux := http.NewServeMux()
 	medirMux.HandleFunc("/datum", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "POST" {
@@ -39,7 +77,7 @@ func main() {
 			datum := string(body)
 			dlog.Info(datum)
 
-			logrus.WithFields(logrus.Fields{
+			l.WithFields(logrus.Fields{
 				"ContentLength": r.ContentLength,
 				"URL": r.URL,
 				"Header": r.Header,
@@ -56,11 +94,13 @@ func main() {
 	certManager := autocert.Manager{
 		Prompt: autocert.AcceptTOS,
 		Cache:  autocert.DirCache("/medir/certs"),
+		Email: "ittysensor@gmail.com",
+		Client: genClient(true),
 	}
 
 	ports := []string{"443", "80", }
 
-	server := &http.Server{
+	secureServer := &http.Server{
 		Addr:    ":" + ports[0],
 		Handler: medirMux,
 		TLSConfig: &tls.Config{
@@ -69,13 +109,13 @@ func main() {
 		ErrorLog: log.New(w, "", 0),
 	}
 
-	logrus.WithFields(logrus.Fields{
+	l.WithFields(logrus.Fields{
 		"ports": ports,
 		"content": contentDir,
 	}).Info("Starting medir-portal-server")
 
+	// Let's Encrypt challenge/response non-encrypted endpoint
 	go http.ListenAndServe(":" + ports[1], certManager.HTTPHandler(nil))
-	err := server.ListenAndServeTLS("", "")
-
-	logrus.Fatal(err)
+	// Encrypted content using certificate from Let's Encrypt
+	logrus.Fatal(secureServer.ListenAndServeTLS("", ""))
 }
