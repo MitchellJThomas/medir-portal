@@ -1,0 +1,6 @@
+FROM golang:alpine as pebble-build
+RUN apk update && apk add git && go get -u github.com/letsencrypt/pebble/...
+WORKDIR /go/src/github.com/letsencrypt/pebble
+EXPOSE 14000
+ENV PEBBLE_VA_NOSLEEP 1
+CMD "pebble" "-config" "./test/config/pebble-config.json"
