@@ -48,7 +48,7 @@ certificates.
 
 1. Send data
 ```
-    curl -H "Content-Type: application/json" -X POST -d '{"username":"xyz","password":"xyz"}' http://localhost:9443/datum
+    curl -H "Content-Type: application/json" -X POST -d '{"username":"xyz","password":"xyz"}' https://localhost:9443/datum
 
 ```
 
