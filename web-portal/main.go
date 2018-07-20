@@ -50,6 +50,14 @@ func genClient(test bool) *acme.Client {
 		return nil
 	}
 
+func LogCertRequest(handler http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	    l.WithFields(logrus.Fields{"RemoteAddr": r.RemoteAddr,
+		    "Method": r.Method,
+		    "URL": r.URL,
+	    }).Info("Cert Request")
+	handler.ServeHTTP(w, r)
+    })
 }
 
 
@@ -83,8 +91,15 @@ func main() {
 				"Header": r.Header,
 				"Body": datum,
 				"TransferEncoding": r.TransferEncoding,
-			}).Info("POST done")
+			}).Debug("POST done")
 		} else {
+			l.WithFields(logrus.Fields{
+				"ContentLength": r.ContentLength,
+				"URL": r.URL,
+				"Header": r.Header,
+				"Body": datum,
+				"TransferEncoding": r.TransferEncoding,
+			}).Info("Invalid HTTP method")
 			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		}
 	})
@@ -115,7 +130,7 @@ func main() {
 	}).Info("Starting medir-portal-server")
 
 	// Let's Encrypt challenge/response non-encrypted endpoint
-	go http.ListenAndServe(":" + ports[1], certManager.HTTPHandler(nil))
+	go http.ListenAndServe(":" + ports[1], LogCertRequest(certManager.HTTPHandler(nil)))
 	// Encrypted content using certificate from Let's Encrypt
 	logrus.Fatal(secureServer.ListenAndServeTLS("", ""))
 }
