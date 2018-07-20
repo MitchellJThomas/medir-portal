@@ -24,7 +24,12 @@ Use docker-cloud to host it using a cloud provider
 
 2. Build the Docker image
 ```
-    docker-compose build
+    docker build . -t mitchelljthomas/medirportal_go:latest
+```
+
+3. Push the new docker image to Docker hub
+```
+    docker push mitchelljthomas/medirportal_go:latest
 ```
 
 ## How to test it

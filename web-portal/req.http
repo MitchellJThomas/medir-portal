@@ -1,0 +1,19 @@
+# -*- mode: restclient; -*-
+# Run a test request
+GET https://www.ittysensor.com/index.html
+
+###
+POST https://www.ittysensor.com/
+Content-type: application/json
+
+{
+        "data":"{\"t\":16.88,\"ts\":1528133972}",
+        "ttl":60,
+        "published_at":"2018-06-04T17:39:20.555Z",
+        "coreid":"220039000647343232363230",
+        "name":"dat"
+}
+
+###
+POST https://ittysensor.co/datum
+{"data":"{\"t\":19.90,\"h\":3.60,\"ts\":1528134020}","ttl":60,"published_at":"2018-06-04T17:40:16.039Z","coreid":"51ff6a065067545754360687","name":"dat"}
