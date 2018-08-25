@@ -49,6 +49,7 @@ func genClient(test bool) *acme.Client {
 	} else {
 		return nil
 	}
+}
 
 func LogCertRequest(handler http.Handler) http.Handler {
     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -59,7 +60,6 @@ func LogCertRequest(handler http.Handler) http.Handler {
 	handler.ServeHTTP(w, r)
     })
 }
-
 
 func main() {
 	w := l.Writer()
@@ -93,11 +93,13 @@ func main() {
 				"TransferEncoding": r.TransferEncoding,
 			}).Debug("POST done")
 		} else {
+			body, _ := ioutil.ReadAll(r.Body)
+			defer r.Body.Close()
 			l.WithFields(logrus.Fields{
 				"ContentLength": r.ContentLength,
 				"URL": r.URL,
 				"Header": r.Header,
-				"Body": datum,
+				"Body": body,
 				"TransferEncoding": r.TransferEncoding,
 			}).Info("Invalid HTTP method")
 			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
