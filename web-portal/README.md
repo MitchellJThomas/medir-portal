@@ -2,7 +2,8 @@
 
 The following is the Docker container for deploying and viewing the
 medir sensor app running on [Itty Sensor](https://www.ittysensor.com),
-using.
+using.  This webserver also serves as the data collection point by
+hosting the `/datum` URI.
 
 Use docker-compose,
 [install that if you need to](https://www.docker.com/docker-toolbox)
@@ -10,7 +11,7 @@ to create a local instance.
 
 Use docker-cloud to host it using a cloud provider
 
-## Hosting the medir UI
+## Hosting the medir UI and data collection
 
 ## How to build it
 
