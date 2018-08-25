@@ -25,11 +25,14 @@ Use docker-cloud to host it using a cloud provider
 
 2. Build the Docker image
 ```
-    docker build . -t mitchelljthomas/medirportal_go:latest
+    docker build . -t mitchelljthomas/medirportal_go:$(git log -n 1 --pretty=format:"%H")
+    docker tag mitchelljthomas/medirportal_go:$(git log -n 1 --pretty=format:"%H") mitchelljthomas/medirportal_go:latest
 ```
 
 3. Push the new docker image to Docker hub
 ```
+    docker login docker.io -u mitchelljthomas
+    docker push mitchelljthomas/medirportal_go:$(git log -n 1 --pretty=format:"%H")
     docker push mitchelljthomas/medirportal_go:latest
 ```
 
