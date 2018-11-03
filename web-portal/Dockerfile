@@ -9,8 +9,8 @@ RUN mkdir -p /medir/certs && apk update && apk add ca-certificates && rm -rf /va
 COPY --from=medir-build /go/src/github.com/mitchelljthomas/medir-portal/web-portal/medir-portal-server /medir
 COPY ./public/ /medir/html/
 # Pebble certs needed for testing only
-COPY ./pebble-ca-certs /usr/local/share/ca-certificates
-RUN update-ca-certificates
+# COPY ./pebble-ca-certs /usr/local/share/ca-certificates
+# RUN update-ca-certificates
 #
 WORKDIR /medir
 EXPOSE 80/tcp 443/tcp

@@ -112,7 +112,7 @@ func main() {
 		Prompt: autocert.AcceptTOS,
 		Cache:  autocert.DirCache("/medir/certs"),
 		Email: "ittysensor@gmail.com",
-		Client: genClient(true),
+		Client: genClient(false),
 	}
 
 	ports := []string{"443", "80", }
