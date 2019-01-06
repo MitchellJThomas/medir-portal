@@ -1,5 +1,0 @@
-CREATE DATABASE medir
-CREATE USER writer WITH PASSWORD '2016particlewriter0916'
-CREATE USER reader WITH PASSWORD '2016reader0916'
-GRANT WRITE ON medir TO writer
-GRANT READ ON medir TO reader
