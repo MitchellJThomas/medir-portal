@@ -30,3 +30,66 @@
     transform: rotate(360deg);
   }
 }
+
+/* Medir sensor CSS */
+#core {
+    color:#0088cc;
+}
+
+#tdate {
+    color:#0088cc;
+}
+
+#time {
+    text-align: left;
+}
+
+#dat-unit {
+    font-weight: 50;
+    font-size: 15px;
+    vertical-align: super;
+}
+
+#tempc {
+    font-weight: 300;
+    font-size: 100px;
+    vertical-align:top;
+}
+
+#tempf {
+    font-weight: 150;
+    font-size: 30px;
+    vertical-align:top;
+}
+
+#humid {
+    font-weight: 150;
+    font-size: 30px;
+    vertical-align:top;
+}
+
+#auth {
+    margin: auto;
+    width: 100%;
+    padding: 40px;
+}
+
+#auth_fields {
+    display: inline-block;
+}
+
+input {
+    background-color: #eae7e7;
+    font-size: 20px;
+    border-width: 0px;
+}
+
+#auth_input {
+    padding: 4px;
+}
+
+td {
+    padding: 10px;
+    text-align: bottom;
+    /* border: 1px solid black; */
+}
