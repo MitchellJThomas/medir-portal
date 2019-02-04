@@ -32,37 +32,37 @@
 }
 
 /* Medir sensor CSS */
-#core {
+.core {
     color:#0088cc;
 }
 
-#tdate {
+.tdate {
     color:#0088cc;
 }
 
-#time {
+.time {
     text-align: left;
 }
 
-#dat-unit {
+.dat-unit {
     font-weight: 50;
     font-size: 15px;
     vertical-align: super;
 }
 
-#tempc {
+.tempc {
     font-weight: 300;
     font-size: 100px;
     vertical-align:top;
 }
 
-#tempf {
+.tempf {
     font-weight: 150;
     font-size: 30px;
     vertical-align:top;
 }
 
-#humid {
+.humid {
     font-weight: 150;
     font-size: 30px;
     vertical-align:top;
