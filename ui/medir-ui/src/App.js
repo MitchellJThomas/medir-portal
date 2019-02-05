@@ -26,81 +26,82 @@ function newOutlet(id, name, plug_state) {
   }
 }
 
-class Sensor extends Component {
-  render() {
-    const state = this.props.state
-    // Flexible formatting in the situation where humidity data isn't pressent
-    const humi = () => {
-      const humi_data = typeof state.humi !== 'undefined' ?
-        state.humi : "--.-"
-      return <td>
-        <span className="humid">{humi_data}</span>
-        <span className="dat-unit">%</span>
-      </td>
-    }
-    return <table>
-      <tbody>
-        <tr>
-          <th className='time'>
-            <span className='tdate'>{state.ts}</span>
-          </th>
-          <td className='core'>{state.name}</td>
-        </tr>
-        <tr>
-          <th rowSpan="2">
-            <span className='tempc'>{state.temp}</span>
-            <span className="dat-unit">°C</span>
-          </th>
-          <td>
-            <span className="tempf">{state.temp}</span>
-            <span className="dat-unit">°F</span>
-          </td>
-        </tr>
-        <tr>
-          {humi()}
-        </tr>
-      </tbody>
-    </table>
+function Sensor(props) {
+  const state = props.state
+
+  // Flexible formatting in the situation where humidity data isn't pressent
+  const humi = () => {
+    const humi_data = typeof state.humi !== 'undefined' ?
+      state.humi.toFixed(1) : "--.-"
+    return <td>
+      <span className="humid">{humi_data}</span>
+      <span className="dat-unit">%</span>
+    </td>
   }
+
+  return <table>
+    <tbody>
+      <tr>
+        <th className='time'>
+          <span className='tdate'>{state.ts}</span>
+        </th>
+        <td className='core'>{state.name}</td>
+      </tr>
+      <tr>
+        <th rowSpan="2">
+          <span className='tempc'>{state.temp.toFixed(1)}</span>
+          <span className="dat-unit">°C</span>
+        </th>
+        <td>
+          <span className="tempf">{state.temp.toFixed(1)}</span>
+          <span className="dat-unit">°F</span>
+        </td>
+      </tr>
+      <tr>
+        {humi()}
+      </tr>
+    </tbody>
+  </table>
 }
 
-class Outlet extends Component {
-  render() {
-    const state = this.props.state
-    const tuple_maker = (accumulator, value, index) => {
-      if (index % 2 === 0) {
-        accumulator.push([value])
-      } else {
-        const last = accumulator[accumulator.length - 1]
-        last.push(value)
-      }
-      return accumulator
-    }
-    const plug_tuples = state.plug_state.reduce(tuple_maker, [])
+function Outlet(props) {
+  const state = props.state
 
-    const plugs = plug_tuples.map((plug, index) => {
-      const odd_plug = typeof plug[1] !== 'undefined' ?
-        <td>{(index * 2 + 1)} is {plug[1]}</td> : <td>--</td>
-      return (
-        <tr key={index}>
-          <td>{index * 2} is {plug[0]}</td>
-          {odd_plug}
-        </tr>
-      )
-    })
-    return <table>
-      <tbody>
-        <tr>
-          <th className='time'>
-            <span className='tdate'>{state.ts}</span>
-          </th>
-          <td className='core'>{state.name}</td>
-        </tr>
-        {plugs}
-      </tbody>
-    </table>
+  const tuple_maker = (accumulator, value, index) => {
+    if (index % 2 === 0) {
+      accumulator.push([value])
+    } else {
+      const last = accumulator[accumulator.length - 1]
+      last.push(value)
+    }
+    return accumulator
   }
+  const plug_tuples = state.plug_state.reduce(tuple_maker, [])
+
+  const plugs = plug_tuples.map((plug, index) => {
+    const odd_plug = typeof plug[1] !== 'undefined' ?
+      <td>{(index * 2 + 1)} is {plug[1]}</td> : <td>--</td>
+    return (
+      <tr key={index}>
+        <td>{index * 2} is {plug[0]}</td>
+        {odd_plug}
+      </tr>
+    )
+  })
+
+  return <table>
+    <tbody>
+      <tr>
+        <th className='time'>
+          <span className='tdate'>{state.ts}</span>
+        </th>
+        <td className='core'>{state.name}</td>
+      </tr>
+      {plugs}
+    </tbody>
+  </table>
 }
+
 
 class DeviceTable extends Component {
   constructor(props) {
@@ -114,6 +115,27 @@ class DeviceTable extends Component {
 
       ]
     }
+  }
+
+  componentDidMount() {
+    this.timerID = setInterval(
+      () => this.tick(),
+      4000
+    );
+
+  }
+
+  tick() {
+    const device_update = this.state.devices.slice()
+    device_update[0].temp += Math.random()
+    device_update[0].humi += Math.random()
+    device_update[1].temp += Math.random()
+    device_update[1].humi += Math.random()
+    this.setState(device_update);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerID);
   }
 
   render() {
