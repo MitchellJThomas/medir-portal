@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSpinner, faSignOutAlt, faUserCog } from '@fortawesome/free-solid-svg-icons'
+
+library.add(faSpinner, faSignOutAlt, faUserCog)
 
 const OUTLET_DEVICE = "outlet"
 const SENSOR_DEVICE = "sensor"
@@ -24,6 +29,16 @@ function newOutlet(id, name, plug_state) {
     plug_state: plug_state,
     type: OUTLET_DEVICE
   }
+}
+
+function Nav(props) {
+  return (
+    <div id="nav">
+      <img src={logo} className="logo" alt="logo" />
+      <span className="user"> mthomas</span>
+      <span className="nav"><FontAwesomeIcon icon="sign-out-alt" /> Sign out</span>
+      <span className="nav"><FontAwesomeIcon icon="user-cog" />Settings</span>
+    </div>)
 }
 
 function Sensor(props) {
@@ -146,11 +161,13 @@ class DeviceTable extends Component {
     })
 
     return (
-      <table>
-        <tbody>
-          {devices}
-        </tbody>
-      </table>
+      <div id="devices">
+        <table>
+          <tbody>
+            {devices}
+          </tbody>
+        </table>
+      </div>
     )
   }
 }
@@ -159,10 +176,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-flogo" alt="logo" /> Devices
-          <DeviceTable />
-        </header>
+        <Nav />
+        <DeviceTable />
       </div>
     );
   }
