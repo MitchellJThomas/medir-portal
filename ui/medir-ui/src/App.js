@@ -95,10 +95,11 @@ function Outlet(props) {
 
   const plugs = plug_tuples.map((plug, index) => {
     const odd_plug = typeof plug[1] !== 'undefined' ?
-      <td>{(index * 2 + 1)} is {plug[1]}</td> : <td>--</td>
+          <td className='plug'>{(index * 2 + 1)}: {plug[1]}</td> :
+          <td className='plug'>--</td>
     return (
       <tr key={index}>
-        <td>{index * 2} is {plug[0]}</td>
+            <td className='plug' >{index * 2}: {plug[0]}</td>
         {odd_plug}
       </tr>
     )
@@ -142,11 +143,22 @@ class DeviceTable extends Component {
 
   tick() {
     const device_update = this.state.devices.slice()
+    device_update[0].ts = new Date().toLocaleTimeString()
     device_update[0].temp += Math.random()
     device_update[0].humi += Math.random()
-    device_update[1].temp += Math.random()
-    device_update[1].humi += Math.random()
-    this.setState(device_update);
+
+
+      if (Math.random() < 0.4) {
+          device_update[1].ts = new Date().toLocaleTimeString()
+          device_update[1].temp += Math.random()
+          device_update[1].humi += Math.random()
+      }
+      if (Math.random() < 0.4) {
+          device_update[3].ts = new Date().toLocaleTimeString()
+          device_update[3].temp += Math.random()
+      }
+
+      this.setState(device_update);
   }
 
   componentWillUnmount() {
