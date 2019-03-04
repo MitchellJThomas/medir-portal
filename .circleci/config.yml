@@ -15,10 +15,9 @@ jobs:
           command: |
             node -v
       - run:
-          name: Go Vesion
+          name: Go Version
           command: |
             go version
-            Now-Complete:
   I-Have-Code:
     docker:
       - image: alpine:latest
@@ -45,7 +44,7 @@ jobs:
             yarn audit
   Webserver-Build:
     docker:
-      - image: circleci/go:latest
+      - image: circleci/golang:latest
     steps:
       - run:
           name: Get deps
