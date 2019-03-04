@@ -27,6 +27,7 @@ jobs:
           name: Yarn it
           command: |
             cd ui/medir-ui
+            yarn init
             yarn build
   Webserver-Build:
     docker:
