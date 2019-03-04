@@ -18,20 +18,11 @@ jobs:
           name: Go Version
           command: |
             go version
-  I-Have-Code:
-    docker:
-      - image: alpine:latest
-    steps:
-      - checkout
-      - run:
-          name: Code Has Arrived
-          command: |
-            ls -al
-            echo '^^^That should look familiar^^^'
   UI-Build:
     docker:
       - image: circleci/node:latest
     steps:
+      - checkout
       - run:
           name: Yarn it
           command: |
@@ -46,6 +37,7 @@ jobs:
     docker:
       - image: circleci/golang:latest
     steps:
+      - checkout
       - run:
           name: Get deps
           command: |
@@ -65,15 +57,10 @@ workflows:
   version: 2
   Example_Workflow:
     jobs:
-      - Version-Check
-      - I-Have-Code
-      - UI-Build:
-          type: approval
-          requires:
-            - I-Have-Code
+      - UI-Build
       - Webserver-Build:
           requires:
-            - I-Have-Code
+            - UI-Build
       - Hold-For-Approval:
           type: approval
           requires:
