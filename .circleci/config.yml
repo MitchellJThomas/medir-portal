@@ -29,7 +29,8 @@ jobs:
            ls -al
            echo '^^^That should look familiar^^^'
   UI-Build:
-    - image: circleci/node:latest
+    docker:
+      - image: circleci/node:latest
     steps:
       - run:
           name: Yarn it
@@ -42,7 +43,8 @@ jobs:
             cd ui/medir-ui
             yarn audit
   Webserver-Build:
-    -image circleci/go:latest
+    docker:
+      -image circleci/go:latest
     steps:
       -run:
         name: Get deps
