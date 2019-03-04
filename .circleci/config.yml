@@ -53,13 +53,13 @@ jobs:
           go get -u github.com/golang/dep/cmd/dep
           dep init
   Now-Complete:
-   docker:
-     - image: alpine:3.7
-   steps:
-     - run:
-         name: Approval Complete
-         command: |
-           echo 'Do work once the approval has completed'
+    docker:
+      - image: alpine:3.7
+    steps:
+      - run:
+          name: Approval Complete
+          command: |
+            echo 'Do work once the approval has completed'
 
 workflows:
   version: 2
