@@ -38,7 +38,7 @@ jobs:
       - checkout
       - run: go get -u github.com/golang/dep/cmd/dep
       - run: dep init
-      - run: go build -o medir-portal-server .
+      - run: go build -o medir-portal-server web-portal/main.go
 
   Now-Complete:
     docker:
