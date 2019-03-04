@@ -5,10 +5,10 @@ jobs:
      - image: circleci/golang:latest-node
    steps:
      - run:
-         name: The First Step
+         name: Linux Version
          command: |
            echo 'Hello World!'
-           echo 'This is the delivery pipeline'
+           cat /etc/lsb_release
      - run:
          name: Node Version
          command: |
