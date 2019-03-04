@@ -72,14 +72,14 @@ workflows:
           type: approval
           requires:
             - I-Have-Code
-     - Webserver-Build:
+      - Webserver-Build:
           requires:
             - I-Have-Code
-     - Hold-For-Approval:
-         type: approval
-         requires:
-           - UI-Build
-           - Webserver-Build
-     - Now-Complete:
-         requires:
-           - Hold-For-Approval
+      - Hold-For-Approval:
+          type: approval
+          requires:
+            - UI-Build
+            - Webserver-Build
+      - Now-Complete:
+          requires:
+            - Hold-For-Approval
