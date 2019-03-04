@@ -44,7 +44,7 @@ jobs:
             yarn audit
   Webserver-Build:
     docker:
-      -image circleci/go:latest
+      - image: circleci/go:latest
     steps:
       -run:
         name: Get deps
