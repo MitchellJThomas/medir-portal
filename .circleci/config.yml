@@ -71,11 +71,9 @@ workflows:
       - UI-Build:
           type: approval
           requires:
-            - Version-Check
             - I-Have-Code
-     - Webserver-Build
+     - Webserver-Build:
           requires:
-            - Version-Check
             - I-Have-Code
      - Hold-For-Approval:
          type: approval
