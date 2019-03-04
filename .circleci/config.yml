@@ -27,12 +27,7 @@ jobs:
           name: Yarn it
           command: |
             cd ui/medir-ui
-            yarn
-      - run:
-          name: Yarn Audit
-          command: |
-            cd ui/medir-ui
-            yarn audit
+            yarn build
   Webserver-Build:
     docker:
       - image: circleci/golang:latest
