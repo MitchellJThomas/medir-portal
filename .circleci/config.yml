@@ -1,8 +1,9 @@
 version: 2.1
 jobs:
   Version-Check:
-   - image: circleci/golang:latest-node
-   steps:
+    docker:
+      - image: circleci/golang:latest-node
+    steps:
      - run:
          name: Linux Version
          command: |
