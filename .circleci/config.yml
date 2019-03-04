@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
- Version-Check:
+  Version-Check:
    - image: circleci/golang:latest-node
    steps:
      - run:
