@@ -1,33 +1,34 @@
+---
 version: 2.1
 jobs:
   Version-Check:
     docker:
       - image: circleci/golang:latest-node
     steps:
-     - run:
-         name: Linux Version
-         command: |
-           echo 'Hello World!'
-           cat /etc/*-release
-     - run:
-         name: Node Version
-         command: |
-           node -v
-     - run:
-         name: Go Vesion
-         command: |
-           go version
-           Now-Complete:
+      - run:
+          name: Linux Version
+          command: |
+            echo 'Linux!'
+            cat /etc/*-release
+      - run:
+          name: Node Version
+          command: |
+            node -v
+      - run:
+          name: Go Vesion
+          command: |
+            go version
+            Now-Complete:
   I-Have-Code:
-   docker:
-     - image: alpine:latest
-   steps:
-     - checkout
-     - run:
-         name: Code Has Arrived
-         command: |
-           ls -al
-           echo '^^^That should look familiar^^^'
+    docker:
+      - image: alpine:latest
+    steps:
+      - checkout
+      - run:
+          name: Code Has Arrived
+          command: |
+            ls -al
+            echo '^^^That should look familiar^^^'
   UI-Build:
     docker:
       - image: circleci/node:latest
