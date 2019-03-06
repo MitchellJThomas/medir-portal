@@ -1,15 +1,12 @@
 ---
-version: 2.1
+version: 2
 jobs:
-  Version-Check:
+
+  UI-Build:
     docker:
-      - image: circleci/golang:latest-node
+      - image: circleci/node:latest
     steps:
-      - run:
-          name: Linux Version
-          command: |
-            echo 'Linux!'
-            cat /etc/*-release
+      - checkout
       - run:
           name: Node Version
           command: |
@@ -18,11 +15,6 @@ jobs:
           name: Go Version
           command: |
             go version
-  UI-Build:
-    docker:
-      - image: circleci/node:latest
-    steps:
-      - checkout
       - run:
           name: Yarn it
           command: |
@@ -32,36 +24,24 @@ jobs:
 
   Webserver-Build:
     docker:
-      - image: circleci/golang:latest
-    working_directory: /go/src/github.com/mitchelljthomas/medir-portal
+      - image: circleci/golang:latest-
+    working_directory: /go/src/github.com/mitchelljthomas/medir-portal/web-portal
     steps:
       - checkout
-      - run: go get -u github.com/golang/dep/cmd/dep
-      - run: dep init
-      - run: go build -o medir-portal-server web-portal/main.go
+      - setup_remote_docker:
+          version: 18.06.3-ce
+      - run: |
+          TAG=0.2.$CIRCLE_BUILD_NUM
+          docker login -u $DOCKER_USER -p $DOCKER_PASS
+          docker build -t mitchelljthomas/medir-portal:$TAG .
+          docker push mitchelljthomas/medir-portal:$TAG
 
-  Now-Complete:
-    docker:
-      - image: alpine:3.7
-    steps:
-      - run:
-          name: Approval Complete
-          command: |
-            echo 'Do work once the approval has completed'
 
 workflows:
   version: 2
-  Example_Workflow:
+  Medir_Portal:
     jobs:
       - UI-Build
       - Webserver-Build:
           requires:
             - UI-Build
-      - Hold-For-Approval:
-          type: approval
-          requires:
-            - UI-Build
-            - Webserver-Build
-      - Now-Complete:
-          requires:
-            - Hold-For-Approval
