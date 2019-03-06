@@ -17,8 +17,10 @@ jobs:
             cd ui/medir-ui
             yarn install
             yarn build
-      - store_artifacts:
-          path: build
+      - persist_to_workspace:
+          root: build
+          paths:
+            - /*
 
   Webserver-Build:
     docker:
@@ -26,12 +28,15 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - attach_workspace:
+          at: build
       - run:
           name: Remote build of webserver
           working_directory:  web-portal
           command: |
             TAG=0.2.$CIRCLE_BUILD_NUM
             docker login -u $DOCKER_USER -p $DOCKER_PASS
+            echo "Building medir-portal:$TAG"
             docker build -t mitchelljthomas/medir-portal:$TAG .
             docker push mitchelljthomas/medir-portal:$TAG
 
