@@ -20,7 +20,7 @@ jobs:
 
   Webserver-Build:
     docker:
-      - image: circleci/golang:latest-
+      - image: circleci/node:latest
     working_directory: /go/src/github.com/mitchelljthomas/medir-portal/web-portal
     steps:
       - checkout
