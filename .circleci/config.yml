@@ -23,8 +23,7 @@ jobs:
       - image: circleci/node:latest
     steps:
       - checkout
-      - setup_remote_docker:
-          version: 18.06.3-ce
+      - setup_remote_docker
       - run:
           name: Remote build of webserver
           working_directory:  web-portal
