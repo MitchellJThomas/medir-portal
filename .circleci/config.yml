@@ -7,6 +7,7 @@ jobs:
       - image: circleci/node:latest
     steps:
       - checkout
+      - working_directory: ui/medir-ui
       - run:
           name: Node Version
           command: |
@@ -14,7 +15,6 @@ jobs:
       - run:
           name: Yarn it
           command: |
-            cd ui/medir-ui
             yarn install
             yarn build
       - persist_to_workspace:
@@ -28,11 +28,11 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - working_directory:  web-portal
       - attach_workspace:
           at: build
       - run:
           name: Remote build of webserver
-          working_directory:  web-portal
           command: |
             TAG=0.2.$CIRCLE_BUILD_NUM
             docker login -u $DOCKER_USER -p $DOCKER_PASS
