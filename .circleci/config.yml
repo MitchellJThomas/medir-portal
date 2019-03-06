@@ -17,6 +17,8 @@ jobs:
             cd ui/medir-ui
             yarn install
             yarn build
+      - store_artifacts:
+          path: build
 
   Webserver-Build:
     docker:
