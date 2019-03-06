@@ -21,16 +21,18 @@ jobs:
   Webserver-Build:
     docker:
       - image: circleci/node:latest
-    working_directory: /go/src/github.com/mitchelljthomas/medir-portal/web-portal
     steps:
       - checkout
       - setup_remote_docker:
           version: 18.06.3-ce
-      - run: |
-          TAG=0.2.$CIRCLE_BUILD_NUM
-          docker login -u $DOCKER_USER -p $DOCKER_PASS
-          docker build -t mitchelljthomas/medir-portal:$TAG .
-          docker push mitchelljthomas/medir-portal:$TAG
+      - run:
+          name: Remote build of webserver
+          working_directory:  web-portal
+          command: |
+            TAG=0.2.$CIRCLE_BUILD_NUM
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker build -t mitchelljthomas/medir-portal:$TAG .
+            docker push mitchelljthomas/medir-portal:$TAG
 
 
 workflows:
