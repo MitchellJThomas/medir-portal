@@ -12,10 +12,6 @@ jobs:
           command: |
             node -v
       - run:
-          name: Go Version
-          command: |
-            go version
-      - run:
           name: Yarn it
           command: |
             cd ui/medir-ui
