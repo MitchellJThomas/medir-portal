@@ -5,9 +5,9 @@ jobs:
   UI-Build:
     docker:
       - image: circleci/node:latest
+    working_directory: ui/medir-ui
     steps:
       - checkout
-      - working_directory: ui/medir-ui
       - run:
           name: Node Version
           command: |
@@ -25,10 +25,10 @@ jobs:
   Webserver-Build:
     docker:
       - image: circleci/node:latest
+    working_directory:  web-portal
     steps:
       - checkout
       - setup_remote_docker
-      - working_directory:  web-portal
       - attach_workspace:
           at: build
       - run:
