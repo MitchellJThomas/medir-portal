@@ -1,7 +1,6 @@
 ---
 version: 2
 jobs:
-
   UI-Build:
     docker:
       - image: circleci/node:latest
@@ -28,3 +27,10 @@ jobs:
             echo "Building medir-portal:$TAG"
             docker build -t mitchelljthomas/medir-portal:$TAG .
             docker push mitchelljthomas/medir-portal:$TAG
+
+
+workflows:
+  version: 2
+  Medir_Portal:
+    jobs:
+      - UI-Build
