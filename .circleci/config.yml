@@ -6,6 +6,7 @@ jobs:
     docker:
       - image: circleci/node:latest
     steps:
+      - setup_remote_docker
       - checkout
       - run:
           name: Node Version
@@ -17,36 +18,13 @@ jobs:
           command: |
             yarn install
             yarn build
-      - persist_to_workspace:
-          root: .
-          paths:
-            - ui/medir-ui/build/
-
-  Webserver-Build:
-    docker:
-      - image: circleci/node:latest
-    working_directory:  web-portal
-    steps:
-      - checkout
-      - setup_remote_docker
-      - attach_workspace:
-          at: build
       - run:
+          working_directory:  web-portal
           name: Remote build of webserver
           command: |
+            mv ../ui/medir-ui/build/ ./public/
             TAG=0.2.$CIRCLE_BUILD_NUM
-            ls build
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             echo "Building medir-portal:$TAG"
             docker build -t mitchelljthomas/medir-portal:$TAG .
             docker push mitchelljthomas/medir-portal:$TAG
-
-
-workflows:
-  version: 2
-  Medir_Portal:
-    jobs:
-      - UI-Build
-      - Webserver-Build:
-          requires:
-            - UI-Build
