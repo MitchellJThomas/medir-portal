@@ -1,5 +1,13 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Fixing vunlerable dependencies
+
+Add a filter in the "resolutions" section to force a particular
+version.
+
+**warning** Make sure to revisit "resolutions" each time you run `yarn
+upgrade`
+
 ## Available Scripts
 
 In the project directory, you can run:
