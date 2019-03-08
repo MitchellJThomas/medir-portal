@@ -21,7 +21,7 @@ jobs:
           working_directory:  web-portal
           name: Remote build of webserver
           command: |
-            mv ../ui/medir-ui/build/ ./public/
+            mv ../ui/medir-ui/build/ ./build/
             TAG=0.2.$CIRCLE_BUILD_NUM
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             echo "Building medir-portal:$TAG"
