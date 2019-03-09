@@ -3,9 +3,9 @@ import logo from './logo.svg';
 import './App.css';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSpinner, faSignOutAlt, faUserCog } from '@fortawesome/free-solid-svg-icons'
+import { faSpinner, faSignOutAlt, faUserCog, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faSpinner, faSignOutAlt, faUserCog)
+library.add(faSpinner, faSignOutAlt, faUserCog, faToggleOn, faToggleOff)
 
 const OUTLET_DEVICE = "outlet"
 const SENSOR_DEVICE = "sensor"
@@ -82,6 +82,8 @@ function Sensor(props) {
 function Outlet(props) {
   const state = props.state
 
+  // Create doublets (touples) from a list of single items
+  // ["a", "b", "c", "d"] => [["a", "b"], ["c", "d"]]
   const tuple_maker = (accumulator, value, index) => {
     if (index % 2 === 0) {
       accumulator.push([value])
@@ -93,13 +95,22 @@ function Outlet(props) {
   }
   const plug_tuples = state.plug_state.reduce(tuple_maker, [])
 
+  const toggle_plug = (plug_state) => {
+    if (plug_state === "on") {
+      return <FontAwesomeIcon icon="toggle-on" />
+    } else {
+      return <FontAwesomeIcon icon="toggle-off" />
+    }
+  }
+
   const plugs = plug_tuples.map((plug, index) => {
     const odd_plug = typeof plug[1] !== 'undefined' ?
-          <td className='plug'>{(index * 2 + 1)}: {plug[1]}</td> :
-          <td className='plug'>--</td>
+      <td className='plug'><div>{(index * 2 + 1)}: {toggle_plug(plug[1])}</div>
+      </td> :
+      <td className='plug'>--</td>
     return (
       <tr key={index}>
-            <td className='plug' >{index * 2}: {plug[0]}</td>
+        <td className='plug'><div>{index * 2}: {toggle_plug(plug[0])}</div></td>
         {odd_plug}
       </tr>
     )
@@ -126,7 +137,7 @@ class DeviceTable extends Component {
       devices: [
         newSensor("aa11", "attic", 12.3, 82.1),
         newSensor("dd44", "garage", 19.5, 99.0),
-        newOutlet("cc33", "front porch", ["off", "on", "off"]),
+        newOutlet("cc33", "front porch", ["off", "on", "off", "off"]),
         newSensor("bb22", "wine cellar", 14.5),
 
       ]
@@ -148,17 +159,17 @@ class DeviceTable extends Component {
     device_update[0].humi += Math.random()
 
 
-      if (Math.random() < 0.4) {
-          device_update[1].ts = new Date().toLocaleTimeString()
-          device_update[1].temp += Math.random()
-          device_update[1].humi += Math.random()
-      }
-      if (Math.random() < 0.4) {
-          device_update[3].ts = new Date().toLocaleTimeString()
-          device_update[3].temp += Math.random()
-      }
+    if (Math.random() < 0.4) {
+      device_update[1].ts = new Date().toLocaleTimeString()
+      device_update[1].temp += Math.random()
+      device_update[1].humi += Math.random()
+    }
+    if (Math.random() < 0.4) {
+      device_update[3].ts = new Date().toLocaleTimeString()
+      device_update[3].temp += Math.random()
+    }
 
-      this.setState(device_update);
+    this.setState(device_update);
   }
 
   componentWillUnmount() {
