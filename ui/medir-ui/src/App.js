@@ -7,29 +7,6 @@ import { faSpinner, faSignOutAlt, faUserCog, faToggleOn, faToggleOff } from '@fo
 
 library.add(faSpinner, faSignOutAlt, faUserCog, faToggleOn, faToggleOff)
 
-const OUTLET_DEVICE = "outlet"
-const SENSOR_DEVICE = "sensor"
-
-function newSensor(id, name, temperature, humidity) {
-  return {
-    id: id,
-    name: name,
-    ts: new Date().toLocaleTimeString(),
-    temp: temperature,
-    humi: humidity,
-    type: SENSOR_DEVICE
-  }
-}
-
-function newOutlet(id, name, plug_state) {
-  return {
-    id: id,
-    name: name,
-    ts: new Date().toLocaleTimeString(),
-    plug_state: plug_state,
-    type: OUTLET_DEVICE
-  }
-}
 
 function Nav(props) {
   return (
@@ -79,38 +56,56 @@ function Sensor(props) {
   </table>
 }
 
-function Outlet(props) {
-  const state = props.state
-
-  // Create doublets (touples) from a list of single items
-  // ["a", "b", "c", "d"] => [["a", "b"], ["c", "d"]]
-  const tuple_maker = (accumulator, value, index) => {
-    if (index % 2 === 0) {
-      accumulator.push([value])
-    } else {
-      const last = accumulator[accumulator.length - 1]
-      last.push(value)
-    }
-    return accumulator
-  }
-  const plug_tuples = state.plug_state.reduce(tuple_maker, [])
-
-  const toggle_plug = (plug_state) => {
-    if (plug_state === "on") {
+function OutletSocket({ key, index, onOff, onClick }) {
+  const toggle_plug = (state) => {
+    if (state === "on") {
       return <FontAwesomeIcon icon="toggle-on" />
     } else {
       return <FontAwesomeIcon icon="toggle-off" />
     }
   }
+  return <td key={key} className='plug'>
+    <div onClick={onClick}> {index}: {toggle_plug(onOff)} </div>
+  </td>
+}
 
-  const plugs = plug_tuples.map((plug, index) => {
-    const odd_plug = typeof plug[1] !== 'undefined' ?
-      <td className='plug'><div>{(index * 2 + 1)}: {toggle_plug(plug[1])}</div>
-      </td> :
-      <td className='plug'>--</td>
+function EmptySocket() {
+  return <td className='plug'>--</td>
+}
+
+function Outlet(props) {
+  const state = props.state
+
+
+  const togglePlug = () => {
+    const update = state.plug_state.slice()
+    update[0] = "off"
+    state.plug_state = update
+    this.setState({ state });
+  };
+
+  // Create doublets (touples) from a list of single items
+  // ["a", "b", "c", "d"] => [["a", "b"], ["c", "d"]]
+  // or for odd sized lists
+  // ["a", "b", "c"] => [["a", "b"], ["c"]]
+  const tuple_maker = (accumulator, value, index) => {
+    const socket = <OutletSocket key={state.id + index}
+      index={index} state={value} onClick={togglePlug} />
+    if (index % 2 === 0) {
+      accumulator.push([socket])
+    } else {
+      const last = accumulator[accumulator.length - 1]
+      last.push(socket)
+    }
+    return accumulator
+  }
+  const plug_tuples = state.plug_state.reduce(tuple_maker, [])
+
+  const plugs = plug_tuples.map((plug_tuple, index) => {
+    const odd_plug = typeof plug_tuple[1] !== 'undefined' ? plug_tuple[1] : <EmptySocket />
     return (
       <tr key={index}>
-        <td className='plug'><div>{index * 2}: {toggle_plug(plug[0])}</div></td>
+        {plug_tuple[0]}
         {odd_plug}
       </tr>
     )
@@ -130,6 +125,30 @@ function Outlet(props) {
 }
 
 
+const OUTLET_DEVICE = "outlet"
+const SENSOR_DEVICE = "sensor"
+
+function newSensor(id, name, temperature, humidity) {
+  return {
+    id: id,
+    name: name,
+    ts: new Date().toLocaleTimeString(),
+    temp: temperature,
+    humi: humidity,
+    type: SENSOR_DEVICE
+  }
+}
+
+function newOutlet(id, name, plug_state) {
+  return {
+    id: id,
+    name: name,
+    ts: new Date().toLocaleTimeString(),
+    plug_state: plug_state,
+    type: OUTLET_DEVICE
+  }
+}
+
 class DeviceTable extends Component {
   constructor(props) {
     super(props)
@@ -137,9 +156,8 @@ class DeviceTable extends Component {
       devices: [
         newSensor("aa11", "attic", 12.3, 82.1),
         newSensor("dd44", "garage", 19.5, 99.0),
-        newOutlet("cc33", "front porch", ["off", "on", "off", "off"]),
+        newOutlet("cc33", "front porch", ["off", "on", "off", "on"]),
         newSensor("bb22", "wine cellar", 14.5),
-
       ]
     }
   }
@@ -179,8 +197,8 @@ class DeviceTable extends Component {
   render() {
     const devices = this.state.devices.map((device) => {
       return device.type === SENSOR_DEVICE ?
-        <tr key={device.id}><td><Sensor state={device}></Sensor></td></tr> :
-        <tr key={device.id}><td><Outlet state={device}></Outlet></td></tr>
+        <tr key={device.id}><td><Sensor state={device} /></td></tr> :
+        <tr key={device.id}><td><Outlet state={device} /></td></tr>
     })
 
     return (
