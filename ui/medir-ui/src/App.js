@@ -152,42 +152,41 @@ function newOutlet(id, name, plug_state) {
 class DeviceTable extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      devices: [
-        newSensor("aa11", "attic", 12.3, 82.1),
-        newSensor("dd44", "garage", 19.5, 99.0),
-        newOutlet("cc33", "front porch", ["off", "on", "off", "on"]),
-        newSensor("bb22", "wine cellar", 14.5),
-      ]
-    }
+    this.state = { devices: {} }
+    const s1 = newSensor("aa11", "attic", 12.3, 82.1)
+    const s2 = newSensor("dd44", "garage", 19.5, 99.0)
+    const o1 = newOutlet("cc33", "front porch", ["off", "on", "off", "on"])
+    const s3 = newSensor("bb22", "wine cellar", 14.5)
+    this.state.devices[s1.id] = s1
+    this.state.devices[s2.id] = s2
+    this.state.devices[s3.id] = s3
+    this.state.devices[o1.id] = o1
+  }
+
+  changeState() {
+    const newState = { devices: {} }
+    const newDevices = newState.devices
+    Object.values(this.state.devices).forEach(device => {
+      if (device.type === SENSOR_DEVICE) {
+        if (Math.random() < 0.4) {
+          const newTemp = device.temp + Math.random()
+          const newHumi = device.humi + Math.random()
+          newDevices[device.id] = newSensor(device.id, device.name, newTemp, newHumi)
+        } else {
+          newDevices[device.id] = device
+        }
+      } else {
+        newDevices[device.id] = device
+      }
+    })
+    this.setState(newState);
   }
 
   componentDidMount() {
     this.timerID = setInterval(
-      () => this.tick(),
+      () => this.changeState(),
       4000
     );
-
-  }
-
-  tick() {
-    const device_update = this.state.devices.slice()
-    device_update[0].ts = new Date().toLocaleTimeString()
-    device_update[0].temp += Math.random()
-    device_update[0].humi += Math.random()
-
-
-    if (Math.random() < 0.4) {
-      device_update[1].ts = new Date().toLocaleTimeString()
-      device_update[1].temp += Math.random()
-      device_update[1].humi += Math.random()
-    }
-    if (Math.random() < 0.4) {
-      device_update[3].ts = new Date().toLocaleTimeString()
-      device_update[3].temp += Math.random()
-    }
-
-    this.setState(device_update);
   }
 
   componentWillUnmount() {
@@ -195,7 +194,7 @@ class DeviceTable extends Component {
   }
 
   render() {
-    const devices = this.state.devices.map((device) => {
+    const devices = Object.values(this.state.devices).map(device => {
       return device.type === SENSOR_DEVICE ?
         <tr key={device.id}><td><Sensor state={device} /></td></tr> :
         <tr key={device.id}><td><Outlet state={device} /></td></tr>
