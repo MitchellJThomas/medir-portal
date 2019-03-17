@@ -1,8 +1,0 @@
-medir-portal:
-  image: mitchelljthomas/medir-portal:latest
-  # restart: always
-  cpu_shares: 256
-  mem_limit: 512mb
-  ports:
-    - "80:80"
-    - "443:443"
