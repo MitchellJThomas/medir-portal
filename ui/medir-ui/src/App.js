@@ -56,16 +56,16 @@ function Sensor(props) {
   </table>
 }
 
-function OutletSocket({ key, index, onOff, onClick }) {
-  const toggle_plug = (state) => {
-    if (state === "on") {
+function OutletSocket({ id, index, onOff, onClick }) {
+  const iconOnOff = (onOff) => {
+    if (onOff === "on") {
       return <FontAwesomeIcon icon="toggle-on" />
     } else {
       return <FontAwesomeIcon icon="toggle-off" />
     }
   }
-  return <td key={key} className='plug'>
-    <div onClick={onClick}> {index}: {toggle_plug(onOff)} </div>
+  return <td key={id + index} className='plug'>
+    <div onClick={onClick} > {index}: {iconOnOff(onOff)} </div>
   </td>
 }
 
@@ -76,21 +76,13 @@ function EmptySocket() {
 function Outlet(props) {
   const state = props.state
 
-
-  const togglePlug = () => {
-    const update = state.plug_state.slice()
-    update[0] = "off"
-    state.plug_state = update
-    this.setState({ state });
-  };
-
   // Create doublets (touples) from a list of single items
   // ["a", "b", "c", "d"] => [["a", "b"], ["c", "d"]]
   // or for odd sized lists
   // ["a", "b", "c"] => [["a", "b"], ["c"]]
   const tuple_maker = (accumulator, value, index) => {
-    const socket = <OutletSocket key={state.id + index}
-      index={index} state={value} onClick={togglePlug} />
+    const socket = <OutletSocket id={state.id}
+      index={index} onOff={value} onClick={() => props.onClick(index)} />
     if (index % 2 === 0) {
       accumulator.push([socket])
     } else {
@@ -152,20 +144,17 @@ function newOutlet(id, name, plug_state) {
 class DeviceTable extends Component {
   constructor(props) {
     super(props)
-    this.state = { devices: {} }
-    const s1 = newSensor("aa11", "attic", 12.3, 82.1)
-    const s2 = newSensor("dd44", "garage", 19.5, 99.0)
-    const o1 = newOutlet("cc33", "front porch", ["off", "on", "off", "on"])
-    const s3 = newSensor("bb22", "wine cellar", 14.5)
-    this.state.devices[s1.id] = s1
-    this.state.devices[s2.id] = s2
-    this.state.devices[s3.id] = s3
-    this.state.devices[o1.id] = o1
+    this.state = { devices: {
+      "aa11": newSensor("aa11", "attic", 12.3, 82.1),
+      "dd44": newSensor("dd44", "garage", 19.5, 99.0),
+      "cc33": newOutlet("cc33", "front porch", ["off", "on", "off", "on"]),
+      "bb22": newSensor("bb22", "wine cellar", 14.5)
+     }
+    }
   }
 
   changeState() {
-    const newState = { devices: {} }
-    const newDevices = newState.devices
+    const newDevices = {}
     Object.values(this.state.devices).forEach(device => {
       if (device.type === SENSOR_DEVICE) {
         if (Math.random() < 0.4) {
@@ -179,7 +168,26 @@ class DeviceTable extends Component {
         newDevices[device.id] = device
       }
     })
-    this.setState(newState);
+    this.setState({devices: newDevices});
+  }
+
+  toggleOutletSocket(device) {
+    return (plugId) => {
+      if (device.type === OUTLET_DEVICE) {
+        // Wow, this seems like too much copy behavior... scratches chin
+        const updatedDevices = Object.assign({}, this.state.devices)
+        const updatedOutletSocket = Object.assign({}, device)
+        updatedDevices[updatedOutletSocket.id] = updatedOutletSocket
+        const newPlugState = updatedOutletSocket.plug_state.slice()
+        updatedOutletSocket.plug_state = newPlugState
+        if (newPlugState[plugId] === "on") {
+          newPlugState[plugId] = "off"
+        } else {
+          newPlugState[plugId] = "on"
+        }
+        this.setState({devices: updatedDevices} )
+      }
+    }
   }
 
   componentDidMount() {
@@ -197,7 +205,7 @@ class DeviceTable extends Component {
     const devices = Object.values(this.state.devices).map(device => {
       return device.type === SENSOR_DEVICE ?
         <tr key={device.id}><td><Sensor state={device} /></td></tr> :
-        <tr key={device.id}><td><Outlet state={device} /></td></tr>
+        <tr key={device.id}><td><Outlet state={device} onClick={this.toggleOutletSocket(device)} /></td></tr>
     })
 
     return (
