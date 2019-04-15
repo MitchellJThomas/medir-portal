@@ -4,6 +4,9 @@ import './App.css';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner, faSignOutAlt, faUserCog, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons'
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { PrivateRoute, LoginPage } from './components';
+// import { Particle } from 'particle-api-js'
 
 library.add(faSpinner, faSignOutAlt, faUserCog, faToggleOn, faToggleOff)
 
@@ -13,7 +16,7 @@ function Nav(props) {
     <div id="nav">
       <img src={logo} className="logo" alt="logo" />
       <span className="user"> mthomas</span>
-      <span className="nav"><FontAwesomeIcon icon="sign-out-alt" /> Sign out</span>
+      <span className="nav"><a href="/login"><FontAwesomeIcon icon="sign-out-alt" />Sign out</a></span>
       <span className="nav"><FontAwesomeIcon icon="user-cog" />Settings</span>
     </div>)
 }
@@ -220,14 +223,29 @@ class DeviceTable extends Component {
   }
 }
 
+class HomePage extends Component {
+  render() {
+    return (
+      <div className="Homepage">
+        <Nav />
+        <DeviceTable />
+      </div>
+    )
+  }
+}
+
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <Nav />
-        <DeviceTable />
+         <Router>
+          <div>
+              <PrivateRoute exact path="/" component={HomePage} />
+              <Route path="/login" component={LoginPage} />
+          </div>
+         </Router>
       </div>
-    );
+    )
   }
 }
 
