@@ -117,10 +117,10 @@ td {
 }
 
 button {
-    background-color: #999;;
+    background-color: rgb(178, 223, 148);;
     color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
+    padding: 14px 5px;
+    margin-top: 30px;
     border: none;
     cursor: pointer;
     width: 100%;
@@ -138,13 +138,18 @@ button {
   
   input[type=text], input[type=password] {
     width: 100%;
-    padding: 12px 20px;
+    padding: 12px 5px;
     margin: 8px 0;
     display: inline-block;
-    border: 1px solid #ccc;
     box-sizing: border-box;
     font-weight: 400;
-    font-size: 30px;
+    font-size: 20px;
   }
 
-  form {border: 1px solid #ccc;}
+  .login {
+    font-size: 20px;
+  }
+
+  .alert-error {
+      color: red;
+  }
