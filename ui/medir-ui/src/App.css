@@ -132,8 +132,10 @@ button {
     opacity: 0.8;
   }
   
-  .container {
+  .login-container {
     padding: 60px;
+    width: 400px;
+    margin: 0 auto;
   }
   
   input[type=text], input[type=password] {
