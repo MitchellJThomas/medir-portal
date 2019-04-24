@@ -1,4 +1,5 @@
 import React from 'react';
+import logo from '../logo.svg';
 
 import { userService } from '../_services';
 
@@ -49,10 +50,11 @@ class LoginPage extends React.Component {
         const { username, password, submitted, loading, error } = this.state;
         return (
             <div className="login-container">
+                <img src={logo} className="logo" alt="logo" />
+                <div className="login-header">Ittysensor</div>
                 <form className="login" name="login" onSubmit={(e) => this.handleSubmit(e)}>
                     <label htmlFor="username">Username</label>
                     <div className={'form-group' + (submitted && !username ? ' alert-error' : '')}>
-                      
                         <input type="text" placeholder="Enter Username" name="username" value={username} onChange={(e) => this.handleChange(e)} />
                         {submitted && !username &&
                             <div className="help-block">Username is required</div>
