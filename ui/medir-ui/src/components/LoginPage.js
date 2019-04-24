@@ -18,13 +18,13 @@ class LoginPage extends React.Component {
         };
     }
 
-    handleChange(e) {
+    handleChange = (e) => {
         const { name, value } = e.target;
         // clear out errors if any when users type (no need to keep the warning around)
         this.setState({ [name]: value, error: '' });
     }
 
-    handleSubmit(e) {
+    handleSubmit = (e) => {
         e.preventDefault();
 
         this.setState({ submitted: true })
@@ -52,17 +52,17 @@ class LoginPage extends React.Component {
             <div className="login-container">
                 <img src={logo} className="logo" alt="logo" />
                 <div className="login-header">Ittysensor</div>
-                <form className="login" name="login" onSubmit={(e) => this.handleSubmit(e)}>
+                <form className="login" name="login" onSubmit={this.handleSubmit}>
                     <label htmlFor="username">Username</label>
                     <div className={'form-group' + (submitted && !username ? ' alert-error' : '')}>
-                        <input type="text" placeholder="Enter Username" name="username" value={username} onChange={(e) => this.handleChange(e)} />
+                        <input type="text" placeholder="Enter Username" name="username" value={username} onChange={this.handleChange} />
                         {submitted && !username &&
                             <div className="help-block">Username is required</div>
                         }
                     </div>
                     <label htmlFor="password">Password</label>
                     <div className={'form-group' + (submitted && !password ? ' alert-error' : '')}>
-                        <input type="password" placeholder="Enter Password" name="password" value={password} onChange={(e) => this.handleChange(e)} />
+                        <input type="password" placeholder="Enter Password" name="password" value={password} onChange={this.handleChange} />
                         {submitted && !password &&
                             <div className="help-block">Password is required</div>
                         }
