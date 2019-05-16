@@ -15,7 +15,7 @@ function Nav(props) {
   return (
     <div id="nav">
       <img src={logo} className="logo" alt="logo" />
-      <span className="user"> mthomas</span>
+      <span className="user"> {props.username}</span>
       <span className="nav"><a href="/login"><FontAwesomeIcon icon="sign-out-alt" />Sign out</a></span>
       <span className="nav"><FontAwesomeIcon icon="user-cog" />Settings</span>
     </div>)
@@ -223,15 +223,13 @@ class DeviceTable extends Component {
   }
 }
 
-class HomePage extends Component {
-  render() {
+function HomePage(props) {
     return (
       <div className="Homepage">
-        <Nav />
+        <Nav username={props.user.username}/>
         <DeviceTable />
       </div>
     )
-  }
 }
 
 class App extends Component {
