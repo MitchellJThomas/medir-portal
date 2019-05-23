@@ -6,10 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner, faSignOutAlt, faUserCog, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons'
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { PrivateRoute, LoginPage } from './components';
-// import { Particle } from 'particle-api-js'
 
 library.add(faSpinner, faSignOutAlt, faUserCog, faToggleOn, faToggleOff)
-
 
 function Nav(props) {
   return (
@@ -118,8 +116,6 @@ function Outlet(props) {
     </tbody>
   </table>
 }
-
-
 const OUTLET_DEVICE = "outlet"
 const SENSOR_DEVICE = "sensor"
 

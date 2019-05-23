@@ -61,6 +61,9 @@ class LoginPage extends React.Component {
                         }
                     </div>
                     <label htmlFor="password">Password</label>
+                    { 
+                        // TODO check out the classnames library 
+                    }
                     <div className={'form-group' + (submitted && !password ? ' alert-error' : '')}>
                         <input type="password" placeholder="Enter Password" name="password" value={password} onChange={this.handleChange} />
                         {submitted && !password &&
@@ -79,4 +82,4 @@ class LoginPage extends React.Component {
     }
 }
 
-export { LoginPage }; 
+export { LoginPage };
