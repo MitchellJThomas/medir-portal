@@ -37,6 +37,24 @@ function sendOtp(mfaToken, otp) {
 
 function logout() {
     // remove user from local storage to log user out
+    const token = localStorage.getItem('token')
+    if (token && token.access_token) {
+        particle.deleteCurrentAccessToken({auth: token.access_token})
+        .then(response=> {
+            console.info("Deleted token", token.access_token, response)
+        },
+        err => {
+            console.warn("Had some problems", err)
+        }
+        )
+        .catch(
+            err => {
+                console.log(err.message);
+                console.log(err.stack);
+            }
+        )
+    }
+
     localStorage.removeItem('token');
     localStorage.removeItem('username');
 }

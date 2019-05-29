@@ -33,9 +33,9 @@ class OtpPrompt extends React.Component {
         }
         this.setState({ loading: true })
         this.setState({mfaToken: mfaToken, verification: verification})
-        userService.sendOtp(mfaToken, verification).then(
+        userService.sendOtp(mfaToken, verification)
+            .then(
                 success => {
-                    console.log("response ", success)
                     const { from } = this.props.location.state || { from: { pathname: "/" } }
                     this.props.history.push(from)
                 },
