@@ -59,7 +59,7 @@ class OtpPrompt extends React.Component {
                         // TODO check out the classnames library 
                     }
                     <div className={'form-group' + (submitted && !verification ? ' alert-error' : '')}>
-                        <input type="text" placeholder="Enter Verification Code" name="verification" value={verification} onChange={this.handleChange} />
+                        <input maxLength="6" type="otp" placeholder="Enter Code" name="verification" value={verification} onChange={this.handleChange} />
                         { submitted && !verification &&
                             <div className="help-block">A verification code is required</div>
                         }
