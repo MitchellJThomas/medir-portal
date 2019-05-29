@@ -222,7 +222,7 @@ class DeviceTable extends Component {
 function HomePage(props) {
     return (
       <div className="Homepage">
-        <Nav username={props.user.username}/>
+        <Nav username={props.username}/>
         <DeviceTable />
       </div>
     )

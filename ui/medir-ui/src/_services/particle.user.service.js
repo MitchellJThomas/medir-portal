@@ -10,6 +10,7 @@ export const userService = {
 
 
 function login(username, password) {
+    localStorage.setItem('username', username);
     return particle.login({username: username, password: password, tokenDuration: 60*60*2})
         .then(response => {
             // login successful if there's a user in the response
@@ -37,4 +38,5 @@ function sendOtp(mfaToken, otp) {
 function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('token');
+    localStorage.removeItem('username');
 }
