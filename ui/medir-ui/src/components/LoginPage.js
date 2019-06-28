@@ -106,7 +106,7 @@ class LoginPage extends React.Component {
 
         // stop here if form is invalid
         if (!(username && password)) {
-            console.warn("Invalid form data", username, password)
+            console.warn('Invalid form data ' + username + " " + password)
             return
         }
 

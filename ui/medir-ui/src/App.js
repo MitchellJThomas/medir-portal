@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner, faSignOutAlt, faUserCog, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons'
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { PrivateRoute, LoginPage } from './components';
+import { sensorService } from './_services'
 
 library.add(faSpinner, faSignOutAlt, faUserCog, faToggleOn, faToggleOff)
 
@@ -116,9 +117,8 @@ function Outlet(props) {
     </tbody>
   </table>
 }
-const OUTLET_DEVICE = "outlet"
-const SENSOR_DEVICE = "sensor"
 
+ // eslint-disable-next-line
 function newSensor(id, name, temperature, humidity) {
   return {
     id: id,
@@ -126,53 +126,30 @@ function newSensor(id, name, temperature, humidity) {
     ts: new Date().toLocaleTimeString(),
     temp: temperature,
     humi: humidity,
-    type: SENSOR_DEVICE
+    type: sensorService.sensorType.SENSOR_DEVICE
   }
 }
-
+ 
+// eslint-disable-next-line
 function newOutlet(id, name, plug_state) {
   return {
     id: id,
     name: name,
     ts: new Date().toLocaleTimeString(),
     plug_state: plug_state,
-    type: OUTLET_DEVICE
+    type: sensorService.sensorType.OUTLET_DEVICE
   }
 }
 
 class DeviceTable extends Component {
   constructor(props) {
     super(props)
-    this.state = { devices: {
-      "aa11": newSensor("aa11", "attic", 12.3, 82.1),
-      "dd44": newSensor("dd44", "garage", 19.5, 99.0),
-      "cc33": newOutlet("cc33", "front porch", ["off", "on", "off", "on"]),
-      "bb22": newSensor("bb22", "wine cellar", 14.5)
-     }
-    }
-  }
-
-  changeState() {
-    const newDevices = {}
-    Object.values(this.state.devices).forEach(device => {
-      if (device.type === SENSOR_DEVICE) {
-        if (Math.random() < 0.4) {
-          const newTemp = device.temp + Math.random()
-          const newHumi = device.humi + Math.random()
-          newDevices[device.id] = newSensor(device.id, device.name, newTemp, newHumi)
-        } else {
-          newDevices[device.id] = device
-        }
-      } else {
-        newDevices[device.id] = device
-      }
-    })
-    this.setState({devices: newDevices});
+      this.state = {devices: {}}
   }
 
   toggleOutletSocket(device) {
     return (plugId) => {
-      if (device.type === OUTLET_DEVICE) {
+      if (device.type === sensorService.sensorType.OUTLET_DEVICE) {
         // Wow, this seems like too much copy behavior... scratches chin
         const updatedDevices = Object.assign({}, this.state.devices)
         const updatedOutletSocket = Object.assign({}, device)
@@ -190,19 +167,17 @@ class DeviceTable extends Component {
   }
 
   componentDidMount() {
-    this.timerID = setInterval(
-      () => this.changeState(),
-      4000
-    );
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.timerID);
+    // TODO make this poll every so often, say 5 minutes?
+    sensorService.getSensors().then(sensors => {
+        if (sensors) {
+          this.setState({devices: sensors})
+        }
+      }).catch( err =>  console.error(err))
   }
 
   render() {
     const devices = Object.values(this.state.devices).map(device => {
-      return device.type === SENSOR_DEVICE ?
+        return device.type === sensorService.sensorType.SENSOR_DEVICE ?
         <tr key={device.id}><td><Sensor state={device} /></td></tr> :
         <tr key={device.id}><td><Outlet state={device} onClick={this.toggleOutletSocket(device)} /></td></tr>
     })
