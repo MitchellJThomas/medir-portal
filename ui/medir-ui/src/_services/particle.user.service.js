@@ -91,8 +91,8 @@ function getSensors() {
                     const sensor = sensors[response.body.id]
                     if (response.body.variables && response.body.variables.datums) {
                         sensor.type = sensorType.SENSOR_DEVICE
-                        sensor.temp = 0
-                        sensor.humi = 0
+                        // sensor.temp = 0
+                        // sensor.humi = 0
                     } else {
                         sensor.type = sensorType.OUTLET_DEVICE
                         sensor.plug_state = ["off", "on", "off", "on"]

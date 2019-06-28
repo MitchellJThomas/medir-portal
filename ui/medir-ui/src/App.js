@@ -25,13 +25,34 @@ function Sensor(props) {
 
   // Flexible formatting in the situation where humidity data isn't pressent
   const humi = () => {
-    const humi_data = typeof state.humi !== 'undefined' ?
+    const humi_data = state.humi !== undefined ?
       state.humi.toFixed(1) : "--.-"
-    return <td>
+    return <tr key="humi"><td>
       <span className="humid">{humi_data}</span>
       <span className="dat-unit">%</span>
-    </td>
+    </td></tr> 
   }
+
+
+  const temp = () => {
+    const temp_data_f = state.temp !== undefined ?  
+      state.temp.toFixed(1) : "-.-"
+    const temp_data_c = state.temp !== undefined ? 
+      state.temp.toFixed(1) : "-.-"
+    return <tr key="temp">
+        <th rowSpan="2">
+          <span className='tempc'>{temp_data_c}</span>
+          <span className="dat-unit">°C</span>
+        </th>
+        <td>
+          <span className="tempf">{temp_data_f}</span>
+          <span className="dat-unit">°F</span>
+        </td>
+      </tr>
+  }
+
+  const offline = 
+    <tr><td>Sensor is offline</td></tr>
 
   return <table>
     <tbody>
@@ -41,19 +62,7 @@ function Sensor(props) {
         </th>
         <td className='core'>{state.name}</td>
       </tr>
-      <tr>
-        <th rowSpan="2">
-          <span className='tempc'>{state.temp.toFixed(1)}</span>
-          <span className="dat-unit">°C</span>
-        </th>
-        <td>
-          <span className="tempf">{state.temp.toFixed(1)}</span>
-          <span className="dat-unit">°F</span>
-        </td>
-      </tr>
-      <tr>
-        {humi()}
-      </tr>
+      {state.online === true ? [temp(), humi()] : offline}
     </tbody>
   </table>
 }
@@ -105,6 +114,9 @@ function Outlet(props) {
     )
   })
 
+  const offline = 
+    <tr><td>Outlet is offline</td></tr>
+
   return <table>
     <tbody>
       <tr>
@@ -113,7 +125,7 @@ function Outlet(props) {
         </th>
         <td className='core'>{state.name}</td>
       </tr>
-      {plugs}
+      { state.online === true ? plugs : offline }
     </tbody>
   </table>
 }
