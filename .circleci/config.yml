@@ -16,7 +16,7 @@ jobs:
           working_directory: ui/medir-ui
           command: |
             yarn install
-            yarn audit
+            yarn audit --level moderate
             yarn build
       - run:
           working_directory:  web-portal
