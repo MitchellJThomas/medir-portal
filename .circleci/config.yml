@@ -24,7 +24,7 @@ jobs:
           command: |
             mv ../ui/medir-ui/build/ ./build/
             TAG=$CIRCLE_BUILD_NUM-$CIRCLE_BRANCH-$CIRCLE_SHA1
-            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
             echo "Building medir-portal:$TAG"
             docker build -t mitchelljthomas/medir-portal:$TAG .
             docker push mitchelljthomas/medir-portal:$TAG
