@@ -1,74 +1,35 @@
 {
-    "name": "medir-ui",
-    "version": "0.2.0",
-    "private": true,
-    "dependencies": {
-        "@fortawesome/fontawesome-svg-core": "1.2.18",
-        "@fortawesome/free-solid-svg-icons": "5.8.2",
-        "@fortawesome/react-fontawesome": "0.1.4",
-        "braces": "3.0.2",
-        "i": "0.3.6",
-        "npm": "6.9.0",
-        "particle-api-js": "7.4.1",
-        "react": "16.8.6",
-        "react-dom": "16.8.6",
-        "react-router-dom": "5.0.0",
-        "react-scripts": "3.0.1"
-    },
-    "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
-        "test": "react-scripts test",
-        "eject": "react-scripts eject",
-        "format": "run-s format:sort-imports format:prettier",
-        "format:prettier": "prettier --loglevel warn --single-quote --write \"{src,cypress}/**/*.{js,jsx,ts,tsx,json,css}\"",
-        "format:sort-imports": "import-sort --write \"{src,cypress}/**/*.{js,jsx,ts,tsx}\""
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged"
-        }
-    },
-    "eslintConfig": {
-        "extends": "react-app"
-    },
-    "browserslist": [
-        ">0.2%",
-        "not dead",
-        "not ie <= 11",
-        "not op_mini all"
-    ],
-    "devDependencies": {
-        "husky": "^1.3.1",
-        "import-sort-cli": "^6.0.0",
-        "import-sort-parser-babylon": "^6.0.0",
-        "import-sort-style-module": "^6.0.0",
-        "lint-staged": "^8.1.4",
-        "prettier": "^1.17.0"
-    },
-    "lint-staged": {
-        "{src}/**/*.{json,css}": [
-            "prettier --single-quote --write",
-            "git add"
-        ],
-        "{src}/**/*.{js,jsx,ts,tsx}": [
-            "eslint --max-warnings 0",
-            "prettier --single-quote --write",
-            "import-sort --write",
-            "git add"
-        ]
-    },
-    "prettier": {
-        "semi": false,
-        "singleQuote": true
-    },
-    "importSort": {
-        ".js, .jsx, .ts, .tsx": {
-            "style": "module"
-        }
-    },
-    "resolutions": {
-        "react-scripts/**/braces": "2.3.2",
-        "tar": "4.4.8"
-    }
+  "name": "medir-ui",
+  "version": "0.2.0",
+  "private": true,
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.17",
+    "@fortawesome/free-solid-svg-icons": "^5.8.1",
+    "@fortawesome/react-fontawesome": "^0.1.4",
+    "i": "^0.3.6",
+    "npm": "^6.13.4",
+    "particle-api-js": "^7.4.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-scripts": "^2.1.8"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {},
+  "resolutions": {
+    "react-scripts/**/braces": "2.3.2"
+  }
 }
