@@ -6,11 +6,10 @@ RUN dep init && go build -o medir-portal-server .
 
 FROM alpine:latest
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
-
-COPY --from=medir-build /go/src/github.com/mitchelljthomas/medir-portal/web-portal/medir-portal-server /medir
-COPY ./build/ /medir/html/
 RUN adduser -D -h /medir -u 1000 medir && mkdir -p /medir/certs
 USER medir
+COPY --from=medir-build /go/src/github.com/mitchelljthomas/medir-portal/web-portal/medir-portal-server /medir
+COPY ./build/ /medir/html/
 WORKDIR /medir
 EXPOSE 80/tcp 443/tcp
 CMD ["/medir/medir-portal-server"]
