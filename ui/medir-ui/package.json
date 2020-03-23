@@ -31,6 +31,6 @@
   ],
   "devDependencies": {},
   "resolutions": {
-    "react-scripts/**/braces": "2.3.2"
+    "npm/**/mem": "4.3.0"
   }
 }
