@@ -115,7 +115,7 @@ func main() {
 		Client: genClient(false),
 	}
 
-	ports := []string{"443", "80", }
+	ports := []string{"8443", "8080", }
 
 	secureServer := &http.Server{
 		Addr:    ":" + ports[0],

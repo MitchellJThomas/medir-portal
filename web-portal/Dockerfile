@@ -11,5 +11,5 @@ USER medir
 COPY --from=medir-build /go/src/github.com/mitchelljthomas/medir-portal/web-portal/medir-portal-server /medir
 COPY ./build/ /medir/html/
 WORKDIR /medir
-EXPOSE 80/tcp 443/tcp
+EXPOSE 8080/tcp 8443/tcp
 CMD ["/medir/medir-portal-server"]
