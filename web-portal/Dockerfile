@@ -11,5 +11,6 @@ USER medir
 COPY --from=medir-build /go/src/github.com/mitchelljthomas/medir-portal/web-portal/medir-portal-server /medir
 COPY ./build/ /medir/html/
 WORKDIR /medir
+ENV IMAGE_TAG
 EXPOSE 8080/tcp 8443/tcp
 CMD ["/medir/medir-portal-server"]

@@ -75,6 +75,23 @@ func main() {
 	defer dlogWriter.Close()
 
 	medirMux := http.NewServeMux()
+
+	imageTag = os.GetEnv("IMAGE_TAG")
+	health := func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte("{\"status\": \"ok\", \"imageTag\": \"" + imageTag + "\"}"))
+
+		l.WithFields(logrus.Fields{
+			"ContentLength": r.ContentLength,
+			"URL": r.URL,
+			"Header": r.Header,
+			"Body": body,
+			"TransferEncoding": r.TransferEncoding,
+		}).Debug("Health checked")
+	}
+
+
+	medirMUx.HandleFunc("/health", health)
 	medirMux.HandleFunc("/datum", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "POST" {
 			body, err := ioutil.ReadAll(r.Body)
