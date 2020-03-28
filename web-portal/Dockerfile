@@ -11,6 +11,7 @@ USER medir
 COPY --from=medir-build /go/src/github.com/mitchelljthomas/medir-portal/web-portal/medir-portal-server /medir
 COPY ./build/ /medir/html/
 WORKDIR /medir
-ENV IMAGE_TAG "unknown"
+ARG circle_ci_image_tag
+ENV IMAGE_TAG=$circle_ci_image_tag
 EXPOSE 8080/tcp 8443/tcp
 CMD ["/medir/medir-portal-server"]
