@@ -85,7 +85,6 @@ func main() {
 			"ContentLength": r.ContentLength,
 			"URL": r.URL,
 			"Header": r.Header,
-			"Body": body,
 			"TransferEncoding": r.TransferEncoding,
 		}).Debug("Health checked")
 	}
