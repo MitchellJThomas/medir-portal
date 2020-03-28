@@ -53,9 +53,11 @@ func genClient(test bool) *acme.Client {
 
 func LogCertRequest(handler http.Handler) http.Handler {
     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-	    l.WithFields(logrus.Fields{"RemoteAddr": r.RemoteAddr,
+	    l.WithFields(logrus.Fields{
+		    "RemoteAddr": r.RemoteAddr,
 		    "Method": r.Method,
 		    "URL": r.URL,
+		    "TLS": r.TLS,
 	    }).Info("Cert Request")
 	handler.ServeHTTP(w, r)
     })
@@ -129,6 +131,7 @@ func main() {
 		Cache:  autocert.DirCache("/medir/certs"),
 		Email: "ittysensor@gmail.com",
 		Client: genClient(false),
+		HostPolicy: autocert.HostWhitelist("ittysensor.com", "www.ittysensor.com"),
 	}
 
 	ports := []string{"8443", "8080", }
