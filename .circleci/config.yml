@@ -26,7 +26,7 @@ jobs:
             TAG=$CIRCLE_BUILD_NUM-$CIRCLE_BRANCH-$CIRCLE_SHA1
             echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
             echo "Building medir-portal:$TAG"
-            docker build -t mitchelljthomas/medir-portal:$TAG --label "github-commit=$CIRCLE_SHA1" --label "branch=$CIRCLE_BRANCH" --label "build-number=$CIRCLE_BUILD" --build-arg IMAGE_TAG=$TAG.
+            docker build -t mitchelljthomas/medir-portal:$TAG --label "github-commit=$CIRCLE_SHA1" --label "branch=$CIRCLE_BRANCH" --label "build-number=$CIRCLE_BUILD" --build-arg IMAGE_TAG=$TAG .
             docker push mitchelljthomas/medir-portal:$TAG
 
 
