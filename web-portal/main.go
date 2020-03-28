@@ -76,7 +76,7 @@ func main() {
 
 	medirMux := http.NewServeMux()
 
-	imageTag = os.GetEnv("IMAGE_TAG")
+	imageTag = os.Getenv("IMAGE_TAG")
 	health := func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.Write([]byte("{\"status\": \"ok\", \"imageTag\": \"" + imageTag + "\"}"))
