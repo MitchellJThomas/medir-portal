@@ -91,7 +91,7 @@ func main() {
 	}
 
 
-	medirMUx.HandleFunc("/health", health)
+	medirMux.HandleFunc("/health", health)
 	medirMux.HandleFunc("/datum", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "POST" {
 			body, err := ioutil.ReadAll(r.Body)
