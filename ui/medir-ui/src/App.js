@@ -223,6 +223,7 @@ class DeviceTable extends Component {
 class App extends Component {
   render() {
     return (
+      <h1>IttySensor From Fleek and IPFS!</h1>
       <div className="App">
         <Nav />
         <DeviceTable />
