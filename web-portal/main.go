@@ -131,7 +131,7 @@ func main() {
 		Cache:  autocert.DirCache("/medir/certs"),
 		Email: "ittysensor@gmail.com",
 		Client: genClient(false),
-		HostPolicy: autocert.HostWhitelist("ittysensor.com", "www.ittysensor.com"),
+		HostPolicy: autocert.HostWhitelist("ittysensor.com", "data.ittysensor.com"),
 	}
 
 	ports := []string{"8443", "8080", }
