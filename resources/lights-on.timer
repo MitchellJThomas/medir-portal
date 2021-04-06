@@ -4,7 +4,7 @@ Description=Christmas lights on timer
 
 [Timer]
 Unit=lights-on.service
-OnCalendar=*-*-* 16:0,30:0
+OnCalendar=*-*-* 19:0,30:0
 RandomizedDelaySec=15m
 Persistent=true
 

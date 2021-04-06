@@ -9,3 +9,4 @@ Wants=network-online.target
 Type=oneshot
 ExecStart=/home/pi/lights-on.sh
 
+[Install]
